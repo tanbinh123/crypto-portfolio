@@ -1,10 +1,10 @@
 package com.mindly.cryptoportfolio.item;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-//@Table(name = "item")
 public class Item {
     private Integer itemId;
     private CurrencyType currencyType;
@@ -26,12 +26,6 @@ public class Item {
         this.marketPrice = marketPrice;
     }
 
-//    @SequenceGenerator(name="SEQ_GEN", sequenceName="SEQ_JUST_FOR_TEST", allocationSize=1)
-//    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_GEN")
-//    @GeneratedValue(strategy=GenerationType.TABLE)
-//    @GeneratedValue
-//    @Column(name = "item_id", unique = true, nullable = false)
-//    @Column(name = "item_id", updatable = false, nullable = false)
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     public Integer getItemId() {
@@ -58,7 +52,7 @@ public class Item {
     public void setAmount(Integer amount) {
         this.amount = amount;
     }
-
+    @JsonFormat(pattern="yyyy-MM-dd")
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -83,9 +77,7 @@ public class Item {
         this.marketPrice = marketPrice;
     }
 
-
     public enum CurrencyType{
         Bitcoin, Ethereum, Ripple
     }
-
 }

@@ -7,6 +7,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -23,10 +24,8 @@ public class ItemService {
         return repo.findAll();
     }
 
-    public void saveItem(Item item){
+    public void saveItem(@Valid Item item){
         calculateMarketPrice(item);
-//        calculateItemID(item);
-
         repo.save(item);
     }
 
@@ -34,38 +33,21 @@ public class ItemService {
         repo.deleteById(id);
     }
 
-//    private void calculateItemID(Item item) {
-//        Random rand = new Random();
-//        int upperBound = 100000;
-//        int randomIDNumber = rand.nextInt(upperBound);
-//
-//        item.setItemId(randomIDNumber);
-//        System.out.println(item.getItemId() + " item.getItemId()");
-//
-//    }
-
     public void calculateMarketPrice(Item item){
         Item.CurrencyType currency_type = item.getCurrencyType();
         String currencyType = currency_type.toString();
-        System.out.println(currencyType);
-
         checkCurrencyType(currencyType);
 
         RestTemplate restTemplate = new RestTemplate();
         String result = restTemplate.getForObject(uri, String.class);
 
         String bitfinixPrice = parseJsonObject(result);
-        System.out.println(bitfinixPrice + " :bitfinixPrice");
-
         String finalPriceWithoutQuotes =  bitfinixPrice.substring(1, bitfinixPrice.length()-1);
-        System.out.println(finalPriceWithoutQuotes + " :finalPriceWithoutQuotes");
 
         float finalPriceFloat = Float.valueOf(finalPriceWithoutQuotes.trim());
-        System.out.println(finalPriceFloat + " :finalPriceFloat");
-
-        float finalMarketPrice = finalPriceFloat * item.getAmount();
+        float exchangeRate = (float) 0.90;
+        float finalMarketPrice = finalPriceFloat * item.getAmount() * exchangeRate ;
         item.setMarketPrice(finalMarketPrice);
-        System.out.println(item.getMarketPrice() + " item.getMarketPrice()");
     }
 
     public String parseJsonObject(String gsonInput){
