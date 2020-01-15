@@ -3,15 +3,11 @@ package com.mindly.cryptoportfolio.item;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ItemService {
@@ -40,22 +36,26 @@ public class ItemService {
 
         RestTemplate restTemplate = new RestTemplate();
         String result = restTemplate.getForObject(uri, String.class);
-
         String bitfinixPrice = parseJsonObject(result);
-        String finalPriceWithoutQuotes =  bitfinixPrice.substring(1, bitfinixPrice.length()-1);
 
-        float finalPriceFloat = Float.valueOf(finalPriceWithoutQuotes.trim());
+        String bitfinixPriceWithoutQuotes =  bitfinixPrice.substring(1, bitfinixPrice.length()-1);
+        float bitfinixPriceFloat = Float.valueOf(bitfinixPriceWithoutQuotes);
+
         float exchangeRate = (float) 0.90;
-        float finalMarketPrice = finalPriceFloat * item.getAmount() * exchangeRate ;
-        item.setMarketPrice(finalMarketPrice);
+        float finalMarketPrice = bitfinixPriceFloat * item.getAmount() * exchangeRate ;
+
+        float finalMarketPriceTrimmed = trimFinalMarketPrice(finalMarketPrice);
+        item.setMarketPrice(finalMarketPriceTrimmed);
     }
 
+    //returns only last_price from the endpoint
     public String parseJsonObject(String gsonInput){
         JsonObject jsonObject = new Gson().fromJson(gsonInput, JsonObject.class);
         String lastPrice = String.valueOf(jsonObject.get("last_price"));
         return lastPrice;
     }
 
+    //Handling which endpoint to hit
     public String checkCurrencyType(String currencyType){
         if(currencyType == "Ripple"){
             uri = "https://api.bitfinex.com/v1/ticker/xrpusd";
@@ -65,5 +65,12 @@ public class ItemService {
             uri = "https://api.bitfinex.com/v1/ticker/ethusd";
         }
         return currencyType;
+    }
+
+    //In order not to return the full float number to the frontend
+    public float trimFinalMarketPrice(float price){
+        String finalTrimmedNumber = String.format("%.2f", price);
+        float finalMarketPriceTrimmed = Float.valueOf(finalTrimmedNumber);
+        return finalMarketPriceTrimmed;
     }
 }

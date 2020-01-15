@@ -52,6 +52,8 @@ public class Item {
     public void setAmount(Integer amount) {
         this.amount = amount;
     }
+
+    //This notation for returning date format to the front-end without time
     @JsonFormat(pattern="yyyy-MM-dd")
     public Date getCreatedAt() {
         return createdAt;
