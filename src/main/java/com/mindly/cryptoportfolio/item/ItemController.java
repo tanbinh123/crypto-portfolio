@@ -10,16 +10,16 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
 
-    @GetMapping("/items")
+    @GetMapping("/api/items")
     public List<Item> listItems(){
         return itemService.listAll();
     }
-    @PostMapping("/items")
+    @PostMapping("/api/items")
     public void addItem(@RequestBody Item item){
         itemService.saveItem(item);
     }
 
-    @DeleteMapping("/items/{id}")
+    @DeleteMapping("/api/items/{id}")
     public void delete(@PathVariable Integer id){
         itemService.deleteITem(id);
     }
