@@ -8,7 +8,7 @@ import java.util.Date;
 public class Item {
     private Integer itemId;
     private CurrencyType currencyType;
-    private Integer amount;
+    private Float amount;
     private Date createdAt;
     private String walletLocation;
     private Float marketPrice;
@@ -17,7 +17,7 @@ public class Item {
 
     }
 
-    public Item(Integer itemId, CurrencyType currencyType, Integer amount, Date createdAt, String walletLocation, Float marketPrice) {
+    public Item(Integer itemId, CurrencyType currencyType, Float amount, Date createdAt, String walletLocation, Float marketPrice) {
         this.itemId = itemId;
         this.currencyType = currencyType;
         this.amount = amount;
@@ -45,11 +45,11 @@ public class Item {
         this.currencyType = currencyType;
     }
 
-    public Integer getAmount() {
+    public Float getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Float amount) {
         this.amount = amount;
     }
 

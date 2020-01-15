@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS items(
+CREATE TABLE IF NOT EXISTS item(
         item_id int PRIMARY KEY NOT NULL,
         currency_type VARCHAR(10) NOT NULL
             CHECK(

@@ -1,0 +1,2 @@
+ALTER TABLE item
+ALTER COLUMN amount TYPE float;

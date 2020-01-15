@@ -1,10 +1,12 @@
 import React from 'react';
 import { Formik } from 'formik';
-import { Input, Button, Tag } from 'antd';
+import { Input, Button, Tag, Select } from 'antd';
 import { addNewItem } from '../client';
 
 const inputBottomMargin = {marginBottom: '10px'};
 const tagStyle = {backgroundColor: '#f50', color: 'white', ...inputBottomMargin};
+
+const Option = Select.Option;
 
 const AddItemForm = (props) => (
     <Formik
@@ -18,6 +20,8 @@ const AddItemForm = (props) => (
 
             if (!values.amount) {
                 errors.amount = 'Amount Required'
+            }else if(values.amount < 0){
+                errors.amount = 'Positive number Required'
             }
 
             if (!values.createdAt) {
@@ -25,11 +29,11 @@ const AddItemForm = (props) => (
             }
 
             if (!values.currencyType) {
-                errors.currencyType = 'CurrencyType Required';
+                errors.currencyType = 'Cryptocurrency Required';
             } else if (!['Bitcoin', 'Ethereum', 'Ripple'].includes(values.currencyType)) {
-                errors.currencyType = 'CurrencyType must be (Bitcoin or Ethereum or Ripple)';
+                errors.currencyType = 'Cryptocurrency must be (Bitcoin or Ethereum or Ripple)';
             }
-            
+
             return errors;
         }}
         onSubmit={(item, { setSubmitting }) => {
@@ -52,18 +56,38 @@ const AddItemForm = (props) => (
         handleSubmit,
         isSubmitting,
         submitForm,
+        setFieldTouched,
+        setFieldValue,
         isValid
     }) => (
         <form onSubmit={handleSubmit}>
-               
-            <Input
+            <h6>Please enter Cryptocurrency</h6>
+            <Select
+            placeholder="Please enter Cryptocurrency"
+              style={inputBottomMargin}
+              onChange={value => setFieldValue("currencyType", value)}
+              onBlur={() => setFieldTouched("currencyType", true)}
+              value={values.currencyType}
+            >
+              <Option key={1} value="Ripple">
+              Ripple
+              </Option>
+              <Option key={2} value="Ethereum">
+              Ethereum
+              </Option>
+              <Option key={3} value="Bitcoin">
+              Bitcoin
+              </Option>
+            </Select>
+
+            {/* <Input
                 style={inputBottomMargin}
                 name="currencyType"
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.currencyType}
                 placeholder='Currency: Bitcoin, Ethereum, Ripple'
-            />
+            /> */}
             {errors.currencyType && touched.currencyType &&
                     <Tag style={tagStyle}>{errors.currencyType}</Tag>}
             <Input
