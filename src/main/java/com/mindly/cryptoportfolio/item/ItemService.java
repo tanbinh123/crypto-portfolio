@@ -41,8 +41,7 @@ public class ItemService {
         String bitfinixPriceWithoutQuotes =  bitfinixPrice.substring(1, bitfinixPrice.length()-1);
         float bitfinixPriceFloat = Float.valueOf(bitfinixPriceWithoutQuotes);
 
-        float exchangeRate = (float) 0.90;
-        float finalMarketPrice = bitfinixPriceFloat * item.getAmount() * exchangeRate ;
+        float finalMarketPrice = bitfinixPriceFloat * item.getAmount() ;
 
         float finalMarketPriceTrimmed = trimFinalMarketPrice(finalMarketPrice);
         item.setMarketPrice(finalMarketPriceTrimmed);
