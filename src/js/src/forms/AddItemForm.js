@@ -79,15 +79,7 @@ const AddItemForm = (props) => (
               Bitcoin
               </Option>
             </Select>
-
-            {/* <Input
-                style={inputBottomMargin}
-                name="currencyType"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.currencyType}
-                placeholder='Currency: Bitcoin, Ethereum, Ripple'
-            /> */}
+            
             {errors.currencyType && touched.currencyType &&
                     <Tag style={tagStyle}>{errors.currencyType}</Tag>}
             <Input

@@ -3,18 +3,18 @@ import fetch from 'unfetch';
 export const getAllItems = () => 
     fetch('api/items').then(checkStatus);
 
-export const addNewItem = student =>
+export const addNewItem = item =>
     fetch('api/items', {
         headers: {
             'Content-Type': 'application/json'
         },
         method: 'POST',
-        body: JSON.stringify(student)
+        body: JSON.stringify(item)
     })
     .then(checkStatus);
 
-export const deleteItem = studentId =>
-    fetch(`api/items/${studentId}`, {
+export const deleteItem = itemId =>
+    fetch(`api/items/${itemId}`, {
         method: 'DELETE'
     })
     .then(checkStatus);
